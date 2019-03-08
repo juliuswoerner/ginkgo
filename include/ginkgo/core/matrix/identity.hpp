@@ -55,6 +55,9 @@ namespace matrix {
  *       if one wants to run a "plain" solver, without using a preconditioner.
  *
  * @tparam ValueType  precision of matrix elements
+ *
+ * @ingroup mat_formats
+ * @ingroup LinOp
  */
 template <typename ValueType = default_precision>
 class Identity : public EnableLinOp<Identity<ValueType>>,
@@ -102,6 +105,9 @@ protected:
  * square.
  *
  * @tparam ValueType  precision of matrix elements
+ *
+ * @ingroup mat_formats
+ * @ingroup LinOp
  */
 template <typename ValueType = default_precision>
 class IdentityFactory

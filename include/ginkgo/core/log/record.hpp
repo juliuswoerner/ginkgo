@@ -52,6 +52,8 @@ namespace log {
 
 /**
  * Struct representing iteration complete related data
+ *
+ * @ingroup log
  */
 struct iteration_complete_data {
     std::unique_ptr<const LinOp> solver;
@@ -86,6 +88,8 @@ struct iteration_complete_data {
 
 /**
  * Struct representing Executor related data
+ *
+ * @ingroup log
  */
 struct executor_data {
     const Executor *exec;
@@ -96,6 +100,8 @@ struct executor_data {
 
 /**
  * Struct representing Operator related data
+ *
+ * @ingroup log
  */
 struct operation_data {
     const Executor *exec;
@@ -105,6 +111,8 @@ struct operation_data {
 
 /**
  * Struct representing PolymorphicObject related data
+ *
+ * @ingroup log
  */
 struct polymorphic_object_data {
     const Executor *exec;
@@ -126,6 +134,8 @@ struct polymorphic_object_data {
 
 /**
  * Struct representing LinOp related data
+ *
+ * @ingroup log
  */
 struct linop_data {
     std::unique_ptr<const LinOp> A;
@@ -152,6 +162,8 @@ struct linop_data {
 
 /**
  * Struct representing LinOp factory related data
+ *
+ * @ingroup log
  */
 struct linop_factory_data {
     const LinOpFactory *factory;
@@ -172,6 +184,8 @@ struct linop_factory_data {
 
 /**
  * Struct representing Criterion related data
+ *
+ * @ingroup log
  */
 struct criterion_data {
     const stop::Criterion *criterion;
@@ -225,6 +239,8 @@ struct criterion_data {
  * events, all parameters are cloned. If it is sufficient to clone one
  * parameter, consider implementing a specific logger for this. In addition, it
  * is advised to tune the history size in order to control memory overhead.
+ *
+ * @ingroup log
  */
 class Record : public Logger {
 public:

@@ -55,6 +55,8 @@ namespace stop {
  *
  * Note that depending on the criterion, convergence may not have happened after
  * stopping.
+ *
+ * @ingroup stop
  */
 class Criterion : public EnableAbstractPolymorphicObject<Criterion> {
 public:
@@ -208,6 +210,8 @@ protected:
  * only some stopping criterion require them to be set. An example is the
  * `ResidualNormReduction` which really requires the `initial_residual` to be
  * set.
+ *
+ * @ingroup stop
  */
 struct CriterionArgs {
     std::shared_ptr<const LinOp> system_matrix;
@@ -229,6 +233,8 @@ struct CriterionArgs {
 
 /**
  * Declares an Abstract Factory specialized for Criterions
+ *
+ * @ingroup stop
  */
 using CriterionFactory = AbstractFactory<Criterion, CriterionArgs>;
 
@@ -247,6 +253,8 @@ using CriterionFactory = AbstractFactory<Criterion, CriterionArgs>;
  *                         defines all of the parameters of the factory
  * @tparam PolymorphicBase  parent of ConcreteFactory in the polymorphic
  *                          hierarchy, has to be a subclass of CriterionFactory
+ *
+ * @ingroup stop
  */
 template <typename ConcreteFactory, typename ConcreteCriterion,
           typename ParametersType, typename PolymorphicBase = CriterionFactory>
@@ -270,6 +278,8 @@ using EnableDefaultCriterionFactory =
  *                          and the public getter's name is
  *                          `get_<_parameters_name>()`)
  * @param _factory_name  name of the generated factory type
+ *
+ * @ingroup stop
  */
 #define GKO_ENABLE_CRITERION_FACTORY(_criterion, _parameters_name,           \
                                      _factory_name)                          \
