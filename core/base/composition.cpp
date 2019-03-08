@@ -34,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ginkgo/core/base/composition.hpp>
 
 
+#include <ginkgo/core/base/utils.hpp>
 #include <ginkgo/core/matrix/dense.hpp>
 
 
@@ -59,8 +60,10 @@ inline const LinOp *apply_inner_operators(
     const std::vector<std::unique_ptr<LinOp>> &intermediate, const LinOp *rhs)
 {
     for (auto i = operators.size() - 1; i > 0u; --i) {
+        auto current_exec = operators[i]->get_executor();
         auto solution = lend(intermediate[i - 1]);
-        operators[i]->apply(rhs, solution);
+        operators[i]->apply(make_temporary_clone(current_exec, rhs).get(),
+                            make_temporary_clone(current_exec, solution).get());
         rhs = solution;
     }
     return rhs;
@@ -76,8 +79,13 @@ void Composition<ValueType>::apply_impl(const LinOp *b, LinOp *x) const
     cache_.intermediate.resize(operators_.size() - 1);
     allocate_vectors<ValueType>(begin(operators_) + 1, end(operators_),
                                 begin(cache_.intermediate));
+    auto current_exec = operators_[0]->get_executor();
     operators_[0]->apply(
-        apply_inner_operators(operators_, cache_.intermediate, b), x);
+        make_temporary_clone(
+            current_exec,
+            apply_inner_operators(operators_, cache_.intermediate, b))
+            .get(),
+        make_temporary_clone(current_exec, x).get());
 }
 
 
@@ -88,9 +96,15 @@ void Composition<ValueType>::apply_impl(const LinOp *alpha, const LinOp *b,
     cache_.intermediate.resize(operators_.size() - 1);
     allocate_vectors<ValueType>(begin(operators_) + 1, end(operators_),
                                 begin(cache_.intermediate));
+    auto current_exec = operators_[0]->get_executor();
     operators_[0]->apply(
-        alpha, apply_inner_operators(operators_, cache_.intermediate, b), beta,
-        x);
+        make_temporary_clone(current_exec, alpha).get(),
+        make_temporary_clone(
+            current_exec,
+            apply_inner_operators(operators_, cache_.intermediate, b))
+            .get(),
+        make_temporary_clone(current_exec, beta).get(),
+        make_temporary_clone(current_exec, x).get());
 }
 
 
